@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Galeri Style Finishing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500;700&family=Instrument+Serif:ital@1&display=swap">
+<style>
+/* layout: header + filter chips, a 4-up grid of 9:16 video cards (2-up tablet, 1-up phone), then a comparison table */
+:root{
+  --bg:#0E0D1A; --panel:#17152A; --line:#2A2745; --fg:#F2F0FA; --muted:#A29FBF; --lime:#D8F23A;
+  --display:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--display);line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-family:'Instrument Serif',serif;font-weight:400;color:var(--lime)}
+.lede{color:var(--muted);max-width:64ch;margin:0;font-size:15.5px}
+.how{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px;color:var(--muted)}
+code,.cmd{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--fg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:700 14px var(--display);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip:focus-visible,.copy:focus-visible,.vid:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+@media (max-width:1060px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+.card{display:flex;flex-direction:column;gap:12px;min-width:0}
+.vid{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:18px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--line)}
+.vid video{width:100%;height:100%;object-fit:cover;display:block}
+.tag{position:absolute;top:12px;left:12px;font:700 12px var(--mono);letter-spacing:.08em;padding:5px 10px;border-radius:999px;background:rgba(10,9,20,.78);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:transform .15s,opacity .15s;pointer-events:none}
+.play svg{margin-left:4px}
+.vid:hover .play{transform:scale(1.08)}
+.vid.on .play{opacity:0}
+.vid.on:hover .play{opacity:.9}
+.vid.on .play .pp{display:none}.vid .play .pa{display:none}.vid.on .play .pa{display:block}
+.card h3{margin:0;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.one{margin:0;color:var(--muted);font-size:14px}
+.meta{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.meta b{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block}
+.meta ul{margin:2px 0 0;padding-left:18px}
+.cmdrow{display:flex;gap:8px;align-items:center;min-width:0}
+.cmdrow .cmd{flex:1;min-width:0;overflow-x:auto;white-space:nowrap}
+.copy{font:700 12px var(--mono);border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:6px 10px;cursor:pointer}
+section h2{font-size:24px;margin:0 0 6px;letter-spacing:-.01em}
+section p{color:var(--muted);margin:0 0 14px;max-width:70ch}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:14px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--panel)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:800;white-space:nowrap}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.flow span{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700}
+.flow i{color:var(--muted);font-style:normal}
+footer{color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">adsy-finishing · 7 gaya</div>
+    <h1>Galeri Style <em>Finishing</em></h1>
+    <p class="lede">Klip agan ditambah VO, lalu diedit mengikuti isi VO dengan subtitle per kata, warna sesuai suasana, efek suara, dan elemen desain yang bergerak. Semua contoh di bawah dibuat dari klip dan VO yang sama, jadi bedanya murni di gaya.</p>
+    <div class="how">Cara pakai: lampirkan RAR (video + VO), lalu tulis <code>/adsy-finishing pakai style PROMO</code>. Tanpa menyebut style, skill memilih sendiri dari isi naskah.</div>
+  </header>
+
+  <div class="chips" role="group" aria-label="Filter style">
+    <button class="chip" id="f-all" aria-pressed="true" data-f="all">Semua</button>
+    <button class="chip" id="f-jual" aria-pressed="false" data-f="jual">Jualan &amp; konversi</button>
+    <button class="chip" id="f-cerita" aria-pressed="false" data-f="cerita">Cerita &amp; edukasi</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <section>
+    <h2>Perbandingan cepat</h2>
+    <p>Semua style selling ditutup tombol BELI SEKARANG dan panah ke keranjang kuning kalau VO punya ajakan beli.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Style</th><th>Tujuan</th><th>Subtitle</th><th>Elemen utama</th><th>Warna &amp; efek</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Kombinasi untuk iklan</h2>
+    <p>Satu video bisa memakai urutan ini: pembuka yang menahan scroll, isi yang meyakinkan, penutup yang mendorong beli.</p>
+    <div class="flow"><span>HOOK</span><i>→</i><span>SOLUSI atau MANFAAT</span><i>→</i><span>PROMO</span></div>
+  </section>
+
+  <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Teks promo seperti "HARGA SPESIAL" hanya dipakai kalau promonya memang ada.</footer>
+</div>
+
+<script>
+const S = [
+  {id:'jualan', name:'JUALAN', g:'jual', c:'#FFD400', one:'Iklan produk standar yang rapi dan jelas.', fit:'Iklan TikTok Shop, produk apa saja', el:['Subtitle kapital, kata aktif di pil kuning','Badge langkah 1 · 2 · 3','Tombol BELI SEKARANG + panah'], sub:'Kapital 2–3 kata, pil kuning', main:'Badge langkah, tombol beli', look:'Masalah dingin, produk cerah + kilatan, whoosh · shimmer · pop · ding'},
+  {id:'hook', name:'HOOK', g:'jual', c:'#00E676', one:'Tiga detik pertama yang menahan jari supaya tidak scroll.', fit:'Iklan dengan pembuka berupa pertanyaan atau fakta mengejutkan', el:['Layar gelap + judul besar naik baris per baris','Stabilo hijau di kata kunci','Garis progres di atas'], sub:'Kapital, pil hijau', main:'Judul hook, garis progres', look:'Hentakan di detik awal, sisanya seperti JUALAN'},
+  {id:'solusi', name:'SOLUSI', g:'jual', c:'#22C55E', one:'Dari masalah ke jalan keluar, terasa "ini aku banget".', fit:'Naskah yang dibuka dengan keluhan lalu memperkenalkan produk', el:['Label merah ✕ MASALAH + kartu keluhan','Hitam-putih berubah jadi berwarna','Label hijau ✓ SOLUSI'], sub:'Kapital, pil kuning', main:'Label status, kartu keluhan', look:'Masalah hitam-putih, kilatan saat produk muncul'},
+  {id:'manfaat', name:'MANFAAT', g:'jual', c:'#38E2C6', one:'Manfaat muncul satu per satu, jadi diingat.', fit:'Naskah yang menyebut beberapa manfaat', el:['Pita produk saat diperkenalkan','Kartu manfaat bertumpuk dengan centang','Tombol beli'], sub:'Kapital, pil tosca', main:'Pita produk, kartu manfaat', look:'Bunyi "tik" tiap manfaat, naik menjelang manfaat'},
+  {id:'promo', name:'PROMO', g:'jual', c:'#FF2D55', one:'Rasa "harus beli sekarang".', fit:'Saat ada promo, diskon, atau harga khusus', el:['Pita merah berjalan di atas','Stiker bergerigi yang bergoyang','Tombol beli berdenyut'], sub:'Kapital, pil kuning', main:'Pita berjalan, stiker promo', look:'Pop di tiap stiker, cerah dan ramai'},
+  {id:'sinema', name:'SINEMA', g:'cerita', c:'#E9C27D', one:'Cerita yang terasa seperti film pendek.', fit:'Kisah, testimoni, konten emosional, dokumenter', el:['Garis hitam atas-bawah yang menutup pelan','Subtitle miring elegan, kata kunci emas','Judul bab di pembuka'], sub:'Serif miring di garis bawah', main:'Letterbox, judul bab', look:'Warna film + butiran, transisi halus, efek suara lembut'},
+  {id:'catatan', name:'CATATAN', g:'cerita', c:'#F59E0B', one:'Langkah dan tips yang mudah diikuti.', fit:'Cara pakai, resep, tips, langkah-langkah', el:['Kartu kertas bergaris dengan selotip','Langkah muncul tepat saat diucapkan','Centang hijau digambar tangan'], sub:'Huruf biasa, kata aktif emas', main:'Kartu catatan', look:'Hangat, pop tiap langkah, tik tiap centang'},
+];
+const grid = document.getElementById('grid'), rows = document.getElementById('rows');
+for (const s of S) {
+  const card = document.createElement('article');
+  card.className = 'card'; card.dataset.g = s.g;
+  const cmd = `/adsy-finishing pakai style ${s.name}`;
+  card.innerHTML = `
+    <div class="vid" tabindex="0" role="button" aria-label="Putar contoh ${s.name}">
+      <video src="v/${s.id}.mp4" poster="v/${s.id}.jpg" playsinline preload="none"></video>
+      <span class="tag">${s.name}</span>
+      <span class="play" aria-hidden="true"><svg class="pp" width="24" height="26" viewBox="0 0 24 26"><path d="M2 2l20 11L2 24z" fill="#0E0D1A"/></svg><svg class="pa" width="22" height="24" viewBox="0 0 22 24"><rect x="2" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/><rect x="14" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/></svg></span>
+    </div>
+    <h3><span class="dot" style="background:${s.c}"></span>${s.name}</h3>
+    <p class="one">${s.one}</p>
+    <div class="meta"><div><b>Cocok untuk</b>${s.fit}</div><div><b>Elemen khas</b><ul>${s.el.map(e=>`<li>${e}</li>`).join('')}</ul></div></div>
+    <div class="cmdrow"><span class="cmd">${cmd}</span><button class="copy" type="button">Salin</button></div>`;
+  const box = card.querySelector('.vid'), v = card.querySelector('video');
+  const toggle = () => {
+    if (v.paused) {
+      document.querySelectorAll('video').forEach(o => { if (o !== v) o.pause(); });
+      v.play().catch(()=>{});
+    } else v.pause();
+  };
+  v.addEventListener('play', () => box.classList.add('on'));
+  v.addEventListener('pause', () => box.classList.remove('on'));
+  v.addEventListener('ended', () => { box.classList.remove('on'); v.load(); });
+  box.addEventListener('click', toggle);
+  box.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  const btn = card.querySelector('.copy');
+  btn.addEventListener('click', () => {
+    navigator.clipboard.writeText(cmd).then(() => { btn.textContent = 'Tersalin'; setTimeout(()=>btn.textContent='Salin',1400); })
+      .catch(() => { const r = document.createRange(); r.selectNodeContents(card.querySelector('.cmd')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); });
+  });
+  grid.appendChild(card);
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><span class="dot" style="display:inline-block;background:${s.c};margin-right:8px"></span>${s.name}</td><td>${s.fit}</td><td>${s.sub}</td><td>${s.main}</td><td>${s.look}</td>`;
+  rows.appendChild(tr);
+}
+document.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'));
+  const f = ch.dataset.f;
+  document.querySelectorAll('.card').forEach(c => { c.hidden = !(f === 'all' || c.dataset.g === f); });
+}));
+</script>
+
+</body>
+</html>
