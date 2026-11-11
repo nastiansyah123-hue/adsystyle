@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500;700&family=Instrument+Serif:ital@1&display=swap">
 <style>
-/* layout: header + filter chips, a 4-up grid of 9:16 video cards (2-up tablet, 1-up phone), then a comparison table */
+/* layout: header + how-to panel, filter chips, a 4-up grid of 9:16 video cards (2-up on tablet and phone, details folded on phone), then a comparison table that stacks into cards on phone */
 :root{
   --bg:#0E0D1A; --panel:#17152A; --line:#2A2745; --fg:#F2F0FA; --muted:#A29FBF; --lime:#D8F23A;
   --display:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
@@ -22,7 +22,10 @@ header{display:flex;flex-direction:column;gap:10px}
 h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
 h1 em{font-family:'Instrument Serif',serif;font-weight:400;color:var(--lime)}
 .lede{color:var(--muted);max-width:64ch;margin:0;font-size:15.5px}
-.how{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px;color:var(--muted)}
+.how{display:flex;flex-direction:column;gap:8px;align-self:flex-start;max-width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--muted)}
+.how .k{font:700 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lime)}
+.how p{margin:0}
+.how code{align-self:flex-start;max-width:100%;overflow-x:auto;white-space:nowrap;background:var(--bg)}
 code,.cmd{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--fg)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font:700 14px var(--display);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer}
@@ -30,7 +33,6 @@ code,.cmd{font-family:var(--mono);font-size:13px;background:var(--panel);border:
 .chip:focus-visible,.copy:focus-visible,.vid:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
 @media (max-width:1060px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.grid{grid-template-columns:1fr}}
 .card{display:flex;flex-direction:column;gap:12px;min-width:0}
 .vid{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:18px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--line)}
 .vid video{width:100%;height:100%;object-fit:cover;display:block}
@@ -43,6 +45,9 @@ code,.cmd{font-family:var(--mono);font-size:13px;background:var(--panel);border:
 .card h3{margin:0;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
 .one{margin:0;color:var(--muted);font-size:14px}
+.more{display:flex;flex-direction:column;gap:10px}
+.more summary{display:none}
+.more[open]>.meta,.more>.meta{display:flex}
 .meta{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
 .meta b{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block}
 .meta ul{margin:2px 0 0;padding-left:18px}
@@ -61,6 +66,43 @@ td:first-child{font-weight:800;white-space:nowrap}
 .flow span{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700}
 .flow i{color:var(--muted);font-style:normal}
 footer{color:var(--muted);font-size:13px}
+/* phone */
+@media (max-width:640px){
+  body{padding-block:20px 48px}
+  .wrap{gap:22px}
+  h1{font-size:32px}
+  .lede{font-size:14.5px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;font-size:13px;padding:8px 14px}
+  .grid{gap:14px 10px}
+  .card{gap:8px}
+  .vid{border-radius:14px}
+  .tag{display:none}
+  .play{width:48px;height:48px;margin:-24px 0 0 -24px}
+  .play svg{transform:scale(.8)}
+  .card h3{font-size:16px}
+  .one{font-size:12.5px;line-height:1.4}
+  .more summary{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;list-style:none;cursor:pointer;font:700 12px var(--mono);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+  .more summary::-webkit-details-marker{display:none}
+  .more summary::after{content:'+';color:var(--lime)}
+  .more[open] summary::after{content:'−'}
+  .meta{font-size:12.5px}
+  .meta ul{padding-left:16px}
+  .cmdrow{flex-direction:column;align-items:stretch;gap:6px}
+  .cmdrow .cmd{font-size:11px}
+  section h2{font-size:20px}
+  .tbl{border:0;overflow:visible}
+  table{min-width:0;font-size:13px}
+  thead{display:none}
+  tbody{display:flex;flex-direction:column;gap:10px}
+  tr{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  td{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:6px 0;border:0}
+  td::before{content:attr(data-l);font:700 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+  td:first-child{display:block;font-size:16px;padding-bottom:8px}
+  td:first-child::before{content:none}
+  .flow span{padding:8px 12px;font-size:14px}
+}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
@@ -72,7 +114,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="eyebrow">adsy-finishing · 7 gaya</div>
     <h1>Galeri Style <em>Finishing</em></h1>
     <p class="lede">Klip agan ditambah VO, lalu diedit mengikuti isi VO dengan subtitle per kata, warna sesuai suasana, efek suara, dan elemen desain yang bergerak. Semua contoh di bawah dibuat dari klip dan VO yang sama, jadi bedanya murni di gaya.</p>
-    <div class="how">Cara pakai: lampirkan RAR (video + VO), lalu tulis <code>/adsy-finishing pakai style PROMO</code>. Tanpa menyebut style, skill memilih sendiri dari isi naskah.</div>
+    <div class="how"><span class="k">Cara pakai</span><p>Lampirkan RAR (video + VO), lalu tulis:</p><code>/adsy-finishing pakai style PROMO</code><p>Tanpa menyebut style, skill memilih sendiri dari isi naskah.</p></div>
   </header>
 
   <div class="chips" role="group" aria-label="Filter style">
@@ -124,8 +166,10 @@ for (const s of S) {
     </div>
     <h3><span class="dot" style="background:${s.c}"></span>${s.name}</h3>
     <p class="one">${s.one}</p>
-    <div class="meta"><div><b>Cocok untuk</b>${s.fit}</div><div><b>Elemen khas</b><ul>${s.el.map(e=>`<li>${e}</li>`).join('')}</ul></div></div>
-    <div class="cmdrow"><span class="cmd">${cmd}</span><button class="copy" type="button">Salin</button></div>`;
+    <details class="more"><summary>Detail</summary>
+      <div class="meta"><div><b>Cocok untuk</b>${s.fit}</div><div><b>Elemen khas</b><ul>${s.el.map(e=>`<li>${e}</li>`).join('')}</ul></div></div>
+      <div class="cmdrow"><span class="cmd">${cmd}</span><button class="copy" type="button">Salin</button></div>
+    </details>`;
   const box = card.querySelector('.vid'), v = card.querySelector('video');
   const toggle = () => {
     if (v.paused) {
@@ -145,9 +189,13 @@ for (const s of S) {
   });
   grid.appendChild(card);
   const tr = document.createElement('tr');
-  tr.innerHTML = `<td><span class="dot" style="display:inline-block;background:${s.c};margin-right:8px"></span>${s.name}</td><td>${s.fit}</td><td>${s.sub}</td><td>${s.main}</td><td>${s.look}</td>`;
+  tr.innerHTML = `<td><span class="dot" style="display:inline-block;background:${s.c};margin-right:8px"></span>${s.name}</td><td data-l="Tujuan">${s.fit}</td><td data-l="Subtitle">${s.sub}</td><td data-l="Elemen">${s.main}</td><td data-l="Warna &amp; efek">${s.look}</td>`;
   rows.appendChild(tr);
 }
+// details open on wide screens, folded on phones
+const wide = matchMedia('(min-width: 641px)');
+const syncDetails = () => document.querySelectorAll('.more').forEach(d => { d.open = wide.matches; });
+syncDetails(); wide.addEventListener('change', syncDetails);
 document.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', () => {
   document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'));
   const f = ch.dataset.f;
