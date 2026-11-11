@@ -38,8 +38,7 @@ code,.cmd{font-family:var(--mono);font-size:13px;background:var(--panel);border:
 .play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:transform .15s,opacity .15s;pointer-events:none}
 .play svg{margin-left:4px}
 .vid:hover .play{transform:scale(1.08)}
-.vid.on .play{opacity:0}
-.vid.on:hover .play{opacity:.9}
+.vid.on .play{opacity:0;visibility:hidden}
 .vid.on .play .pp{display:none}.vid .play .pa{display:none}.vid.on .play .pa{display:block}
 .card h3{margin:0;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
