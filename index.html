@@ -110,6 +110,12 @@ footer{color:var(--muted);font-size:13px}
 .tab[aria-selected="true"]{background:var(--lime);color:var(--bg)}
 .tab:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 .view{display:flex;flex-direction:column;gap:28px}
+.dl{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;max-width:100%}
+.dl .btn{display:inline-flex;align-items:center;gap:10px;font:800 15px var(--display);color:var(--bg);background:var(--lime);border-radius:999px;padding:12px 20px;text-decoration:none;white-space:nowrap}
+.dl .btn:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.dl .info{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--muted);min-width:0}
+.dl .info b{color:var(--fg);font-size:15px}
+.dl ol{margin:4px 0 0;padding-left:18px}
 #grid-mg .tag{display:none}
 .note{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:13.5px;color:var(--muted);max-width:80ch}
 @media (max-width:640px){.view{gap:22px}.tab{font-size:13px;padding:8px 14px}}
@@ -162,17 +168,24 @@ footer{color:var(--muted);font-size:13px}
 
 <div class="view" id="view-motion-graph" role="tabpanel" aria-labelledby="t-motion-graph" hidden>
   <header>
-    <div class="eyebrow">adsy-motion-graph · 12 gaya medis</div>
+    <div class="eyebrow">adsy-motion-graph · 19 gaya medis</div>
     <h1>Galeri Style <em>Motion Graph</em></h1>
-    <p class="lede">Video motion graphic edukasi kesehatan dan penyakit dari VO saja: gambar, subtitle per kata, musik, dan efek suara dibuat mengikuti isi VO. Semua contoh di bawah dipotong dari satu video "Sarapan Bikin Gemuk?", jadi tiap gaya menjelaskan kalimat yang berbeda.</p>
+    <p class="lede">Video motion graphic edukasi kesehatan dan penyakit dari VO saja: gambar, subtitle per kata, musik, dan efek suara dibuat mengikuti isi VO. Semua contoh di bawah dibuat dari VO yang sama, "Sarapan Bikin Gemuk?". Sebagian besar dipotong per kalimat, jadi tiap gaya menjelaskan kalimat yang berbeda. DOKTER KARTUN ditampilkan sebagai video utuh.</p>
     <div class="how"><span class="k">Cara pakai</span><p>Lampirkan VO (naskah boleh tidak ada), lalu tulis:</p><code>/adsy-motion-graph pakai gaya RONTGEN</code><p>Tanpa menyebut gaya, skill memilih sendiri dari isi naskah. Satu video memakai satu gaya.</p></div>
+    <div class="dl">
+      <a class="btn" href="download/adsy-motion-graph.zip" download="adsy-motion-graph.zip"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download skill</a>
+      <div class="info"><b>adsy-motion-graph v2.1 · ZIP 6 MB</b>
+        <ol><li>Di Claude buka Customize → Skills → + → Upload a skill.</li><li>Pilih file ZIP ini langsung, tidak perlu diekstrak.</li><li>Aktifkan juga Code execution dan network egress di Settings → Capabilities.</li></ol>
+      </div>
+    </div>
   </header>
 
   <div class="chips" role="group" aria-label="Filter gaya" data-for="grid-mg">
     <button class="chip" id="m-all" aria-pressed="true" data-f="all">Semua</button>
     <button class="chip" id="m-tubuh" aria-pressed="false" data-f="tubuh">Di dalam tubuh</button>
     <button class="chip" id="m-cegah" aria-pressed="false" data-f="cegah">Pencegahan &amp; gizi</button>
-    <button class="chip" id="m-lab" aria-pressed="false" data-f="lab">Lab &amp; data</button>
+    <button class="chip" id="m-lab" aria-pressed="false" data-f="lab">Lab, obat &amp; data</button>
+    <button class="chip" id="m-cerita" aria-pressed="false" data-f="cerita">Cerita &amp; presenter</button>
   </div>
 
   <div class="grid" id="grid-mg"></div>
@@ -186,7 +199,7 @@ footer{color:var(--muted);font-size:13px}
     </table></div>
   </section>
 
-  <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Nomor dan nama gaya di pojok video hanya ada di video uji gaya ini, tidak muncul di video pesanan.</footer>
+  <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Nomor dan nama gaya di pojok video hanya ada di video uji gaya, tidak muncul di video pesanan.</footer>
 </div>
 </div>
 
@@ -214,6 +227,13 @@ const M = [
   {id:'mikroskop', name:'MIKROSKOP', g:'lab', c:'#2FA36B', one:'Lewat lensa: buram lalu fokus, yang sehat dicentang.', fit:'Bakteri, keamanan makanan, cek porsi, "lihat lebih dekat"', el:['Lensa bulat dengan fokus yang menajam','Garis ukur','Centang hijau dan silang merah'], sub:'Pil terang, kata aktif hijau', main:'Lensa, label centang/silang', look:'Klik lensa, pop tiap centang'},
   {id:'anatomi', name:'ANATOMI', g:'tubuh', c:'#F2C46B', one:'Gambar buku kedokteran dengan label yang rapi.', fit:'Cara kerja organ, bagian sebuah proses, isi piring seimbang', el:['Diagram bersih + garis penunjuk','Label serif','Coretan merah untuk kontras'], sub:'Serif di hitam, kata aktif kuning', main:'Diagram, label, sumber resmi', look:'Dokumenter tenang, ketukan tiap label'},
   {id:'kaca-preparat', name:'KACA PREPARAT', g:'lab', c:'#B0457E', one:'Kaca sampel lab untuk membandingkan atau bertanya ke penonton.', fit:'Perbandingan sampel, tes lab, pertanyaan penutup', el:['Kaca preparat dengan noda pewarna','Label nomor sampel','Kaca terakhir berisi pertanyaan'], sub:'Huruf tebal di ungu, kata aktif kuning', main:'Deretan kaca sampel', look:'Denting kaca, akor hangat di akhir'},
+{id:'jam-tubuh', name:'JAM TUBUH', g:'tubuh', c:'#7CF2B4', one:'Jam 24 jam: kapan tubuh butuh apa, siang dan malam berganti.', fit:'Tidur, jam biologis, waktu makan atau minum obat, puasa, begadang', el:['Jam 24 jam dengan busur siang-malam','Cincin energi dan aktivitas','Langit berubah mengikuti jam'], sub:'Huruf modern di pil biru tua, kata aktif mint', main:'Jam besar, penanda kejadian', look:'Malam ke fajar, detak jam, kilau di penanda'},
+  {id:'dua-sisi', name:'DUA SISI', g:'cerita', c:'#F2665A', one:'Layar terbelah: kebiasaan A vs kebiasaan B, hasilnya kelihatan.', fit:'Lakukan vs jangan, sebelum vs sesudah, merokok vs tidak', el:['Garis pembagi zigzag','Karakter sama di dua sisi','Meteran dan hasil yang berbeda'], sub:'Huruf bulat di pil putih bergaris tebal, kata aktif koral', main:'Dua karakter, jam bersama, hasil', look:'Ceria, pop di hasil, alarm lembut di sisi buruk'},
+  {id:'label-gizi', name:'LABEL GIZI', g:'cegah', c:'#FFE14D', one:'Tabel Informasi Nilai Gizi: angka gula, garam, lemak dibedah.', fit:'Gula tersembunyi, minuman manis, diabetes, hipertensi, cara baca label', el:['Panel nilai gizi hitam-putih','% AKG menghitung naik','Stabilo, catatan tempel mitos, banner fakta'], sub:'Huruf tebal kotak bergaris hitam, kata aktif merah', main:'Label gizi, catatan mitos', look:'Kertas kraft, tik saat angka naik, hentakan di fakta'},
+  {id:'webtoon', name:'WEBTOON', g:'cerita', c:'#FF3B5C', one:'Komik vertikal yang di-scroll, lengkap dengan efek suara.', fit:'Kisah pasien, gejala yang diabaikan, simulasi "bayangin kalau", plot twist', el:['Panel komik bergaris tebal','Raster titik','Tulisan efek BLUB! HAH?!'], sub:'Tulisan tangan di pil putih, kata aktif merah muda', main:'Panel komik bergulir', look:'Hitam-putih + aksen cerah, pop komik'},
+  {id:'apotek', name:'APOTEK', g:'lab', c:'#1E5FB4', one:'Etiket apotek dan strip blister untuk "aturan pakai".', fit:'Cara minum obat, antibiotik harus habis, obat bebas vs resep', el:['Etiket putih kepala biru','Aturan pakai huruf besar','Isi blister keluar satu per satu'], sub:'Kapital ramping di biru, kata aktif kuning', main:'Etiket, strip blister', look:'Bersih seperti apotek, bunyi snap tiap isi blister'},
+  {id:'endoskopi', name:'ENDOSKOPI', g:'tubuh', c:'#FFB4A8', one:'Kamera masuk ke dalam tubuh sampai ke lambung.', fit:'Maag, GERD, radang tenggorokan, pencernaan', el:['Lensa fisheye','Lorong merah muda yang bergerak','HUD kamera + label ILUSTRASI'], sub:'Huruf modern di merah gelap, kata aktif merah muda', main:'Lensa, lorong, kata besar saat tiba', look:'Dramatis tapi tidak seram, napas dan gemuruh perut'},
+  {id:'dokter-kartun', name:'DOKTER KARTUN', g:'cerita', c:'#2A9D8F', one:'Dokter kartun menjelaskan sambil infografis muncul di sebelahnya.', fit:'Tips, langkah-langkah, mitos vs fakta, video utuh dengan pembawa acara', el:['Dokter kartun orisinal, mulut ikut suara','Kartu judul dengan kata kunci distabilo','Infografis per kalimat + garis progres'], sub:'Pil gelap, kata aktif di kotak kuning', main:'Presenter, kartu judul, infografis', look:'Pastel ganti tiap adegan, pop di kata kunci'},
 ];
 const playIcon = '<span class="play" aria-hidden="true"><svg class="pp" width="24" height="26" viewBox="0 0 24 26"><path d="M2 2l20 11L2 24z" fill="#0E0D1A"/></svg><svg class="pa" width="22" height="24" viewBox="0 0 22 24"><rect x="2" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/><rect x="14" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/></svg></span>';
 function build(list, gridId, rowsId, cmdFor, dir) {
