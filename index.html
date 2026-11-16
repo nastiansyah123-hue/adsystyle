@@ -129,6 +129,7 @@ footer{color:var(--muted);font-size:13px}
   <div class="tabs" role="tablist" aria-label="Pilih skill">
     <button class="tab" role="tab" id="t-finishing" aria-controls="view-finishing" aria-selected="true" data-v="finishing">Finishing</button>
     <button class="tab" role="tab" id="t-motion-graph" aria-controls="view-motion-graph" aria-selected="false" data-v="motion-graph">Motion Graph</button>
+    <button class="tab" role="tab" id="t-video-editor" aria-controls="view-video-editor" aria-selected="false" data-v="video-editor">Video Editor</button>
   </div>
 
 <div class="view" id="view-finishing" role="tabpanel" aria-labelledby="t-finishing">
@@ -201,6 +202,40 @@ footer{color:var(--muted);font-size:13px}
 
   <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Nomor dan nama gaya di pojok video hanya ada di video uji gaya, tidak muncul di video pesanan.</footer>
 </div>
+<div class="view" id="view-video-editor" role="tabpanel" aria-labelledby="t-video-editor" hidden>
+  <header>
+    <div class="eyebrow">adsy-video-editor · 13 gaya</div>
+    <h1>Galeri Style <em>Video Editor</em></h1>
+    <p class="lede">Video kamu sendiri (orang bicara ke kamera) diedit otomatis: jeda dan "eh/emm" dipotong, subtitle per kata, zoom mengikuti wajah, grafis, musik, dan efek suara. Semua cuplikan di bawah dibuat dari video yang sama, iklan kapsul Numata, jadi bedanya murni di gaya. Warnanya mengikuti rekaman asli, termasuk video HDR dari iPhone.</p>
+    <div class="how"><span class="k">Cara pakai</span><p>Lampirkan video kamu, lalu tulis:</p><code>/adsy-video-editor pakai gaya KLINIK</code><p>Claude mengirim gambar contoh dulu. Video baru dirender setelah kamu balas "lanjut".</p></div>
+    <div class="dl">
+      <a class="btn" href="download/adsy-video-editor.zip" download="adsy-video-editor.zip"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download skill</a>
+      <div class="info"><b>adsy-video-editor v1.0 · ZIP 1,8 MB</b>
+        <ol><li>Di Claude buka Customize → Skills → + → Upload a skill.</li><li>Pilih file ZIP ini langsung, tidak perlu diekstrak.</li><li>Aktifkan juga Code execution dan network egress di Settings → Capabilities.</li></ol>
+      </div>
+    </div>
+  </header>
+
+  <div class="chips" role="group" aria-label="Filter gaya" data-for="grid-ve">
+    <button class="chip" id="e-all" aria-pressed="true" data-f="all">Semua</button>
+    <button class="chip" id="e-sehat" aria-pressed="false" data-f="sehat">Kesehatan</button>
+    <button class="chip" id="e-jual" aria-pressed="false" data-f="jual">Jualan &amp; promo</button>
+    <button class="chip" id="e-edu" aria-pressed="false" data-f="edu">Edukasi &amp; cerita</button>
+  </div>
+
+  <div class="grid" id="grid-ve"></div>
+
+  <section>
+    <h2>Perbandingan cepat</h2>
+    <p>Teks di grafis hanya kata yang diucapkan atau yang kamu tulis sendiri (nama produk, CTA). Wajah dan suara tetap asli.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Gaya</th><th>Cocok untuk</th><th>Subtitle</th><th>Elemen utama</th><th>Rasa</th></tr></thead>
+      <tbody id="rows-ve"></tbody>
+    </table></div>
+  </section>
+
+  <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Cuplikan sekitar 8 detik dari video 15 detik.</footer>
+</div>
 </div>
 
 <script>
@@ -234,6 +269,21 @@ const M = [
   {id:'apotek', name:'APOTEK', g:'lab', c:'#1E5FB4', one:'Etiket apotek dan strip blister untuk "aturan pakai".', fit:'Cara minum obat, antibiotik harus habis, obat bebas vs resep', el:['Etiket putih kepala biru','Aturan pakai huruf besar','Isi blister keluar satu per satu'], sub:'Kapital ramping di biru, kata aktif kuning', main:'Etiket, strip blister', look:'Bersih seperti apotek, bunyi snap tiap isi blister'},
   {id:'endoskopi', name:'ENDOSKOPI', g:'tubuh', c:'#FFB4A8', one:'Kamera masuk ke dalam tubuh sampai ke lambung.', fit:'Maag, GERD, radang tenggorokan, pencernaan', el:['Lensa fisheye','Lorong merah muda yang bergerak','HUD kamera + label ILUSTRASI'], sub:'Huruf modern di merah gelap, kata aktif merah muda', main:'Lensa, lorong, kata besar saat tiba', look:'Dramatis tapi tidak seram, napas dan gemuruh perut'},
   {id:'dokter-kartun', name:'DOKTER KARTUN', g:'cerita', c:'#2A9D8F', one:'Dokter kartun menjelaskan sambil infografis muncul di sebelahnya.', fit:'Tips, langkah-langkah, mitos vs fakta, video utuh dengan pembawa acara', el:['Dokter kartun orisinal, mulut ikut suara','Kartu judul dengan kata kunci distabilo','Infografis per kalimat + garis progres'], sub:'Pil gelap, kata aktif di kotak kuning', main:'Presenter, kartu judul, infografis', look:'Pastel ganti tiap adegan, pop di kata kunci'},
+];
+const VE = [
+  {id:'klinik', name:'KLINIK', g:'sehat', c:'#0F766E', one:'Bersih putih-tosca: pertanyaan dijawab dengan kartu alat ukur.', fit:'Produk kesehatan, dokter/perawat/ahli gizi, tanya-jawab ukuran atau dosis', el:['Kata pertanyaan dilingkari','Kartu ukur: kapsul membesar, mengecil, lalu terkunci di jawaban','Tombol CTA tosca'], sub:'Kalem, kata aktif distabilo mint', main:'Kartu alat ukur, tombol CTA', look:'Klinis, rapi, terpercaya'},
+  {id:'resep', name:'RESEP', g:'sehat', c:'#1C2B5A', one:'Kertas resep R/ menulis aturan pakai dengan tulisan tangan.', fit:'Cara pakai, aturan minum, kebiasaan sehat, tips tenaga kesehatan', el:['Selotip dengan kata dicoret','Kertas resep dengan tulisan tangan + stabilo','Tanda tangan'], sub:'Kalem, kata aktif distabilo kuning', main:'Kertas resep, selotip', look:'Personal dan meyakinkan'},
+  {id:'mitos-fakta', name:'MITOS / FAKTA', g:'sehat', c:'#E11D2E', one:'Klaim dicap MITOS, lalu layar hijau dan stempel FAKTA.', fit:'"Katanya…", "apa benar…?", membantah keraguan produk atau mitos kesehatan', el:['Kata raksasa di belakang badan','Stempel MITOS merah','Latar hijau + stempel FAKTA'], sub:'Tebal putih, label solid', main:'Stempel, latar warna', look:'Berani, cepat, mudah dibagikan'},
+  {id:'impact', name:'IMPACT', g:'jual', c:'#C6FF3D', one:'Energik dan tegas, judul "slam" di belakang kamu.', fit:'Iklan, promo, hook jualan, bisnis', el:['Judul raksasa di belakang badan','Judul slam dengan blok lime','Punch-in di kata penting'], sub:'Kartu putih, sorotan lime', main:'Judul kinetik', look:'Keras dan cepat'},
+  {id:'creator-pop', name:'CREATOR POP', g:'jual', c:'#7C5CFF', one:'Gaya kreator: stiker die-cut dan cutout badan.', fit:'Personal brand, tips cepat, lifestyle, konten lucu', el:['Stiker die-cut di sekitar wajah','Cutout badan dengan latar warna','Subtitle outline tebal'], sub:'Outline tebal, kata aktif kuning', main:'Stiker, cutout', look:'Ceria dan ramai'},
+  {id:'lumen', name:'LUMEN', g:'jual', c:'#5EEAD4', one:'Judul menyala dan centang 3D mengkilap.', fit:'Bisnis/UMKM, produktivitas, personal brand premium', el:['Pill kaca dengan badge centang','Judul gradient menyala','Ikon 3D berputar'], sub:'Putih naik dari blur', main:'Judul bercahaya, ikon 3D', look:'Premium dan mewah'},
+  {id:'poster', name:'POSTER', g:'jual', c:'#16A34A', one:'Momen penting jadi poster dengan latar warna.', fit:'Edukasi, tips, review, topik kuat, "kayak thumbnail"', el:['Checklist di atas frame blur','Latar warna terbuka dari kepala','Judul dua warna dengan gema outline'], sub:'Tebal putih, label solid', main:'Latar poster, checklist', look:'Tegas seperti thumbnail'},
+  {id:'noted', name:'NOTED', g:'edu', c:'#FFD43B', one:'Catatan di sekitar kepala: label, selotip, stabilo.', fit:'Edukasi, penjelasan, tips, daftar dan perbandingan', el:['Label mono yang mengetik sendiri','Selotip saat sesuatu disebut','Kata besar distabilo + catatan pinggir'], sub:'Kalem, stabilo kuning', main:'Catatan di atas kepala', look:'Simpel tapi informatif'},
+  {id:'editorial', name:'EDITORIAL', g:'edu', c:'#E9C27D', one:'Sinematik dan premium, judul serif ala majalah.', fit:'Edukasi tenang, dokumenter, profil, "jangan banyak efek"', el:['Letterbox atas-bawah','Kartu judul serif','Transisi halus'], sub:'Serif kalem', main:'Kartu judul', look:'Tenang dan elegan'},
+  {id:'storyteller', name:'STORYTELLER', g:'edu', c:'#F5C451', one:'Pertanyaan melayang di atas kepala, judul dengan busur cahaya.', fit:'"Bayangin kalau…", opini, fakta unik, cerita', el:['Search bar mengetik di atas kepala','Tanda tanya 3D melayang','Judul dengan busur cahaya'], sub:'Mengetik per huruf', main:'Search bar, judul tesis', look:'Bercerita, penasaran'},
+  {id:'depth', name:'DEPTH', g:'edu', c:'#A78BFA', one:'Teks raksasa di belakang badan, campuran tebal dan miring.', fit:'Personal brand, tips dan opini, "ala After Effects"', el:['Dua kata terbelah dari balik kepala','Doodle di sekitar kepala','Teks bertumpuk di belakang badan'], sub:'Kalem', main:'Teks di belakang badan', look:'Premium ala AE'},
+  {id:'system', name:'SYSTEM', g:'edu', c:'#3B82F6', one:'Nuansa tech: chat dan subtitle terminal.', fit:'Tutorial tools, AI, aplikasi, tanya-jawab', el:['Panel chat yang mengetik','Subtitle gaya terminal','Prompt bar'], sub:'Terminal mono', main:'Panel chat', look:'Teknologi dan rapi'},
+  {id:'mograph-mix', name:'MOGRAPH MIX', g:'edu', c:'#FF7A45', one:'Wajah dan motion graphic bergantian.', fit:'Explainer produk, jualan/UMKM, kelas online', el:['Judul kinetik di belakang badan','Scene motion graphic full layar','Transisi orb dan bars'], sub:'Pil kaca', main:'Scene + judul hero', look:'Reels premium'},
 ];
 const playIcon = '<span class="play" aria-hidden="true"><svg class="pp" width="24" height="26" viewBox="0 0 24 26"><path d="M2 2l20 11L2 24z" fill="#0E0D1A"/></svg><svg class="pa" width="22" height="24" viewBox="0 0 22 24"><rect x="2" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/><rect x="14" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/></svg></span>';
 function build(list, gridId, rowsId, cmdFor, dir) {
@@ -279,6 +329,7 @@ function build(list, gridId, rowsId, cmdFor, dir) {
 }
 build(S, 'grid', 'rows', n => `/adsy-finishing pakai style ${n}`, 'v/');
 build(M, 'grid-mg', 'rows-mg', n => `/adsy-motion-graph pakai gaya ${n}`, 'v/mg/');
+build(VE, 'grid-ve', 'rows-ve', n => `/adsy-video-editor pakai gaya ${n}`, 'v/ve/');
 // details open on wide screens, folded on phones
 const wide = matchMedia('(min-width: 641px)');
 const syncDetails = () => document.querySelectorAll('.more').forEach(d => { d.open = wide.matches; });
@@ -293,7 +344,7 @@ document.querySelectorAll('.chips').forEach(group => {
   }));
 });
 // tabs: #finishing / #motion-graph
-const views = ['finishing', 'motion-graph'];
+const views = ['finishing', 'motion-graph', 'video-editor'];
 function show(id) {
   if (!views.includes(id)) id = 'finishing';
   views.forEach(v => {
