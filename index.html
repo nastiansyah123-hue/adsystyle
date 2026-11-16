@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Galeri Style Finishing</title>
+<title>Galeri Style ADSY</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500;700&family=Instrument+Serif:ital@1&display=swap">
 <style>
@@ -14,6 +14,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--fg);font-family:var(--display);line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
 .wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
@@ -103,6 +104,15 @@ footer{color:var(--muted);font-size:13px}
   td:first-child::before{content:none}
   .flow span{padding:8px 12px;font-size:14px}
 }
+/* top tabs: Finishing | Motion Graph */
+.tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px;align-self:flex-start;max-width:100%;overflow-x:auto}
+.tab{font:700 14px var(--display);color:var(--muted);background:transparent;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--lime);color:var(--bg)}
+.tab:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.view{display:flex;flex-direction:column;gap:28px}
+#grid-mg .tag{display:none}
+.note{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:13.5px;color:var(--muted);max-width:80ch}
+@media (max-width:640px){.view{gap:22px}.tab{font-size:13px;padding:8px 14px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
@@ -110,6 +120,12 @@ footer{color:var(--muted);font-size:13px}
 
 
 <div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Pilih skill">
+    <button class="tab" role="tab" id="t-finishing" aria-controls="view-finishing" aria-selected="true" data-v="finishing">Finishing</button>
+    <button class="tab" role="tab" id="t-motion-graph" aria-controls="view-motion-graph" aria-selected="false" data-v="motion-graph">Motion Graph</button>
+  </div>
+
+<div class="view" id="view-finishing" role="tabpanel" aria-labelledby="t-finishing">
   <header>
     <div class="eyebrow">adsy-finishing · 8 gaya</div>
     <h1>Galeri Style <em>Finishing</em></h1>
@@ -117,7 +133,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="how"><span class="k">Cara pakai</span><p>Lampirkan RAR (video + VO), lalu tulis:</p><code>/adsy-finishing pakai style PROMO</code><p>Tanpa menyebut style, skill memilih sendiri dari isi naskah.</p></div>
   </header>
 
-  <div class="chips" role="group" aria-label="Filter style">
+  <div class="chips" role="group" aria-label="Filter style" data-for="grid">
     <button class="chip" id="f-all" aria-pressed="true" data-f="all">Semua</button>
     <button class="chip" id="f-jual" aria-pressed="false" data-f="jual">Jualan &amp; konversi</button>
     <button class="chip" id="f-cerita" aria-pressed="false" data-f="cerita">Cerita &amp; edukasi</button>
@@ -144,6 +160,36 @@ footer{color:var(--muted);font-size:13px}
   <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Teks promo seperti "HARGA SPESIAL" hanya dipakai kalau promonya memang ada.</footer>
 </div>
 
+<div class="view" id="view-motion-graph" role="tabpanel" aria-labelledby="t-motion-graph" hidden>
+  <header>
+    <div class="eyebrow">adsy-motion-graph · 12 gaya medis</div>
+    <h1>Galeri Style <em>Motion Graph</em></h1>
+    <p class="lede">Video motion graphic edukasi kesehatan dan penyakit dari VO saja: gambar, subtitle per kata, musik, dan efek suara dibuat mengikuti isi VO. Semua contoh di bawah dipotong dari satu video "Sarapan Bikin Gemuk?", jadi tiap gaya menjelaskan kalimat yang berbeda.</p>
+    <div class="how"><span class="k">Cara pakai</span><p>Lampirkan VO (naskah boleh tidak ada), lalu tulis:</p><code>/adsy-motion-graph pakai gaya RONTGEN</code><p>Tanpa menyebut gaya, skill memilih sendiri dari isi naskah. Satu video memakai satu gaya.</p></div>
+  </header>
+
+  <div class="chips" role="group" aria-label="Filter gaya" data-for="grid-mg">
+    <button class="chip" id="m-all" aria-pressed="true" data-f="all">Semua</button>
+    <button class="chip" id="m-tubuh" aria-pressed="false" data-f="tubuh">Di dalam tubuh</button>
+    <button class="chip" id="m-cegah" aria-pressed="false" data-f="cegah">Pencegahan &amp; gizi</button>
+    <button class="chip" id="m-lab" aria-pressed="false" data-f="lab">Lab &amp; data</button>
+  </div>
+
+  <div class="grid" id="grid-mg"></div>
+
+  <section>
+    <h2>Perbandingan cepat</h2>
+    <p>Klaim kesehatan di layar hanya yang ada di naskah atau sumber resmi. Angka ilustrasi diberi label, dan ada catatan "bukan saran medis" bila perlu.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Gaya</th><th>Cocok untuk</th><th>Subtitle</th><th>Elemen utama</th><th>Warna &amp; efek</th></tr></thead>
+      <tbody id="rows-mg"></tbody>
+    </table></div>
+  </section>
+
+  <footer>Ketuk video untuk memutar, ketuk lagi untuk berhenti. Nomor dan nama gaya di pojok video hanya ada di video uji gaya ini, tidak muncul di video pesanan.</footer>
+</div>
+</div>
+
 <script>
 const S = [
   {id:'jualan', name:'JUALAN', g:'jual', c:'#FFD400', one:'Iklan produk standar yang rapi dan jelas.', fit:'Iklan TikTok Shop, produk apa saja', el:['Subtitle kapital, kata aktif di pil kuning','Badge langkah 1 · 2 · 3','Tombol BELI SEKARANG + panah'], sub:'Kapital 2–3 kata, pil kuning', main:'Badge langkah, tombol beli', look:'Masalah dingin, produk cerah + kilatan, whoosh · shimmer · pop · ding'},
@@ -155,54 +201,92 @@ const S = [
   {id:'sinema', name:'SINEMA', g:'cerita', c:'#E9C27D', one:'Cerita yang terasa seperti film pendek.', fit:'Kisah, testimoni, konten emosional, dokumenter', el:['Garis hitam atas-bawah yang menutup pelan','Subtitle miring elegan, kata kunci emas','Judul bab di pembuka'], sub:'Serif miring di garis bawah', main:'Letterbox, judul bab', look:'Warna film + butiran, transisi halus, efek suara lembut'},
   {id:'catatan', name:'CATATAN', g:'cerita', c:'#F59E0B', one:'Langkah dan tips yang mudah diikuti.', fit:'Cara pakai, resep, tips, langkah-langkah', el:['Kartu kertas bergaris dengan selotip','Langkah muncul tepat saat diucapkan','Centang hijau digambar tangan'], sub:'Huruf biasa, kata aktif emas', main:'Kartu catatan', look:'Hangat, pop tiap langkah, tik tiap centang'},
 ];
-const grid = document.getElementById('grid'), rows = document.getElementById('rows');
-for (const s of S) {
-  const card = document.createElement('article');
-  card.className = 'card'; card.dataset.g = s.g;
-  const cmd = `/adsy-finishing pakai style ${s.name}`;
-  card.innerHTML = `
-    <div class="vid" tabindex="0" role="button" aria-label="Putar contoh ${s.name}">
-      <video src="v/${s.id}.mp4" poster="v/${s.id}.jpg" playsinline preload="none"></video>
-      <span class="tag">${s.name}</span>
-      <span class="play" aria-hidden="true"><svg class="pp" width="24" height="26" viewBox="0 0 24 26"><path d="M2 2l20 11L2 24z" fill="#0E0D1A"/></svg><svg class="pa" width="22" height="24" viewBox="0 0 22 24"><rect x="2" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/><rect x="14" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/></svg></span>
-    </div>
-    <h3><span class="dot" style="background:${s.c}"></span>${s.name}</h3>
-    <p class="one">${s.one}</p>
-    <details class="more"><summary>Detail</summary>
-      <div class="meta"><div><b>Cocok untuk</b>${s.fit}</div><div><b>Elemen khas</b><ul>${s.el.map(e=>`<li>${e}</li>`).join('')}</ul></div></div>
-      <div class="cmdrow"><span class="cmd">${cmd}</span><button class="copy" type="button">Salin</button></div>
-    </details>`;
-  const box = card.querySelector('.vid'), v = card.querySelector('video');
-  const toggle = () => {
-    if (v.paused) {
-      document.querySelectorAll('video').forEach(o => { if (o !== v) o.pause(); });
-      v.play().catch(()=>{});
-    } else v.pause();
-  };
-  v.addEventListener('play', () => box.classList.add('on'));
-  v.addEventListener('pause', () => box.classList.remove('on'));
-  v.addEventListener('ended', () => { box.classList.remove('on'); v.load(); });
-  box.addEventListener('click', toggle);
-  box.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
-  const btn = card.querySelector('.copy');
-  btn.addEventListener('click', () => {
-    navigator.clipboard.writeText(cmd).then(() => { btn.textContent = 'Tersalin'; setTimeout(()=>btn.textContent='Salin',1400); })
-      .catch(() => { const r = document.createRange(); r.selectNodeContents(card.querySelector('.cmd')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); });
-  });
-  grid.appendChild(card);
-  const tr = document.createElement('tr');
-  tr.innerHTML = `<td><span class="dot" style="display:inline-block;background:${s.c};margin-right:8px"></span>${s.name}</td><td data-l="Tujuan">${s.fit}</td><td data-l="Subtitle">${s.sub}</td><td data-l="Elemen">${s.main}</td><td data-l="Warna &amp; efek">${s.look}</td>`;
-  rows.appendChild(tr);
+const M = [
+  {id:'poster-puskesmas', name:'POSTER PUSKESMAS', g:'cegah', c:'#D7372A', one:'Poster penyuluhan jadul yang langsung menjawab mitos atau fakta.', fit:'Pencegahan, kampanye kesehatan, mitos vs fakta, gizi keluarga, imunisasi', el:['Kertas krem bertitik halftone + bingkai tebal','Judul besar dua warna','Stempel merah untuk vonis'], sub:'Huruf tegak tebal di bar merah, kata aktif kuning', main:'Judul poster, ikon tebal, stempel', look:'Cerah dan ramah, hentakan di stempel, pop di ikon'},
+  {id:'monitor', name:'MONITOR', g:'tubuh', c:'#38F28A', one:'Layar ICU: angka vital naik turun mengikuti cerita.', fit:'Jantung, tekanan darah, oksigen, energi tubuh, kondisi darurat', el:['Garis EKG berjalan','Angka vital besar','Bar energi bersegmen'], sub:'Huruf monitor kapital, kata aktif kuning', main:'EKG, angka vital, chip kejadian', look:'Hitam-hijau, bunyi bip lembut, naik saat angka naik'},
+  {id:'termal', name:'TERMAL', g:'tubuh', c:'#FC9A1E', one:'Kamera inframerah: bagian yang panas langsung kelihatan.', fit:'Demam, peradangan, rasa lapar, nyeri, metabolisme', el:['Tubuh berwarna panas biru-ungu-merah-kuning','Titik panas yang membesar','Skala suhu + angka °C'], sub:'Putih di ungu gelap, kata aktif jingga', main:'Siluet panas, bidikan, jam', look:'Dengung hangat, sinyal lembut saat titik memuncak'},
+  {id:'rekam-medis', name:'REKAM MEDIS', g:'lab', c:'#E8C67F', one:'Map pasien: hasil diketik, distabilo, lalu dicap.', fit:'Hasil lab, kolesterol, gula darah, langkah diagnosis, "kasus" mitos', el:['Formulir bergaris di map','Stabilo kuning di nilai penting','Tulisan tangan dokter + stempel'], sub:'Huruf mesin ketik di kertas putih, kata aktif merah', main:'Formulir, stabilo, stempel', look:'Bunyi ketik, coret stabilo, hentakan stempel'},
+  {id:'paper-cut', name:'PAPER CUT', g:'cegah', c:'#E9775A', one:'Diorama kertas berlapis untuk simulasi "bayangin kalau…".', fit:'Simulasi, anak dan keluarga, perbandingan gaya hidup, orang banyak', el:['Lapisan kertas melayang dengan bayangan','Orang kertas yang menggembung','Label SIMULASI + spanduk vonis'], sub:'Huruf bulat di pil krem, kata aktif ungu', main:'Bukit kertas, orang kertas', look:'Hangat dan lucu, pop saat berubah'},
+  {id:'kota-tubuh', name:'KOTA TUBUH', g:'tubuh', c:'#4CD6B4', one:'Tubuh sebagai kota: pembuluh darah jadi jalan, organ jadi gedung.', fit:'Sistem imun, peredaran darah, cara kerja obat, kalori masuk vs keluar', el:['Jalan merah = pembuluh darah','Truk nutrisi masuk dan keluar','Gedung organ + gudang lemak'], sub:'Huruf modern di biru tua, kata aktif kuning', main:'Peta kota, truk, catatan masuk/keluar', look:'Malam biru, detak kota, tik tiap gelombang truk'},
+  {id:'herbarium', name:'HERBARIUM', g:'cegah', c:'#6E8B4E', one:'Ilustrasi botani: makanan dan tanaman digambar lalu diwarnai.', fit:'Makanan sehat, tanaman herbal, vitamin, pola makan untuk kondisi tertentu', el:['Gambar tinta yang menggambar sendiri','Cat air yang meresap','Nama lokal + nama latin'], sub:'Serif klasik di coklat tua, kata aktif kuning', main:'Kartu spesimen, label latin', look:'Akustik tenang, kilau tiap gambar muncul'},
+  {id:'rontgen', name:'RONTGEN', g:'tubuh', c:'#7FB7E6', one:'Foto X-ray: tulang menyala, organ yang bermasalah ditandai.', fit:'Tulang, paru, lambung, apa yang terjadi di dalam saat ada yang kurang', el:['Tulang bercahaya','Garis pindai bergerak','Organ bergaris putus + label'], sub:'Kapital ramping di biru gelap, kata aktif jingga', main:'Kerangka, garis pindai, meteran energi', look:'Dengung rendah, napas, ketukan lembut'},
+  {id:'neon-sel', name:'NEON SEL', g:'tubuh', c:'#35E7FF', one:'Sel dan saraf menyala mengikuti narasi.', fit:'Otak, mood, konsentrasi, tidur, hormon, virus, vaksin', el:['Jaringan saraf yang menyala bertahap','Denyut cahaya di sepanjang saraf','Kartu meter FOKUS dan MOOD'], sub:'Huruf tebal di hitam ungu, kata aktif cyan', main:'Jaringan sel, meter', look:'Synth penuh harapan, kilau saat jaringan menyala'},
+  {id:'mikroskop', name:'MIKROSKOP', g:'lab', c:'#2FA36B', one:'Lewat lensa: buram lalu fokus, yang sehat dicentang.', fit:'Bakteri, keamanan makanan, cek porsi, "lihat lebih dekat"', el:['Lensa bulat dengan fokus yang menajam','Garis ukur','Centang hijau dan silang merah'], sub:'Pil terang, kata aktif hijau', main:'Lensa, label centang/silang', look:'Klik lensa, pop tiap centang'},
+  {id:'anatomi', name:'ANATOMI', g:'tubuh', c:'#F2C46B', one:'Gambar buku kedokteran dengan label yang rapi.', fit:'Cara kerja organ, bagian sebuah proses, isi piring seimbang', el:['Diagram bersih + garis penunjuk','Label serif','Coretan merah untuk kontras'], sub:'Serif di hitam, kata aktif kuning', main:'Diagram, label, sumber resmi', look:'Dokumenter tenang, ketukan tiap label'},
+  {id:'kaca-preparat', name:'KACA PREPARAT', g:'lab', c:'#B0457E', one:'Kaca sampel lab untuk membandingkan atau bertanya ke penonton.', fit:'Perbandingan sampel, tes lab, pertanyaan penutup', el:['Kaca preparat dengan noda pewarna','Label nomor sampel','Kaca terakhir berisi pertanyaan'], sub:'Huruf tebal di ungu, kata aktif kuning', main:'Deretan kaca sampel', look:'Denting kaca, akor hangat di akhir'},
+];
+const playIcon = '<span class="play" aria-hidden="true"><svg class="pp" width="24" height="26" viewBox="0 0 24 26"><path d="M2 2l20 11L2 24z" fill="#0E0D1A"/></svg><svg class="pa" width="22" height="24" viewBox="0 0 22 24"><rect x="2" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/><rect x="14" y="1" width="6" height="22" rx="2" fill="#0E0D1A"/></svg></span>';
+function build(list, gridId, rowsId, cmdFor, dir) {
+  const grid = document.getElementById(gridId), rows = document.getElementById(rowsId);
+  for (const s of list) {
+    const card = document.createElement('article');
+    card.className = 'card'; card.dataset.g = s.g;
+    const cmd = cmdFor(s.name);
+    card.innerHTML = `
+      <div class="vid" tabindex="0" role="button" aria-label="Putar contoh ${s.name}">
+        <video src="${dir}${s.id}.mp4" poster="${dir}${s.id}.jpg" playsinline preload="none"></video>
+        <span class="tag">${s.name}</span>
+        ${playIcon}
+      </div>
+      <h3><span class="dot" style="background:${s.c}"></span>${s.name}</h3>
+      <p class="one">${s.one}</p>
+      <details class="more"><summary>Detail</summary>
+        <div class="meta"><div><b>Cocok untuk</b>${s.fit}</div><div><b>Elemen khas</b><ul>${s.el.map(e=>`<li>${e}</li>`).join('')}</ul></div></div>
+        <div class="cmdrow"><span class="cmd">${cmd}</span><button class="copy" type="button">Salin</button></div>
+      </details>`;
+    const box = card.querySelector('.vid'), v = card.querySelector('video');
+    const toggle = () => {
+      if (v.paused) {
+        document.querySelectorAll('video').forEach(o => { if (o !== v) o.pause(); });
+        v.play().catch(()=>{});
+      } else v.pause();
+    };
+    v.addEventListener('play', () => box.classList.add('on'));
+    v.addEventListener('pause', () => box.classList.remove('on'));
+    v.addEventListener('ended', () => { box.classList.remove('on'); v.load(); });
+    box.addEventListener('click', toggle);
+    box.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    const btn = card.querySelector('.copy');
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(cmd).then(() => { btn.textContent = 'Tersalin'; setTimeout(()=>btn.textContent='Salin',1400); })
+        .catch(() => { const r = document.createRange(); r.selectNodeContents(card.querySelector('.cmd')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); });
+    });
+    grid.appendChild(card);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><span class="dot" style="display:inline-block;background:${s.c};margin-right:8px"></span>${s.name}</td><td data-l="Cocok untuk">${s.fit}</td><td data-l="Subtitle">${s.sub}</td><td data-l="Elemen">${s.main}</td><td data-l="Warna &amp; efek">${s.look}</td>`;
+    rows.appendChild(tr);
+  }
 }
+build(S, 'grid', 'rows', n => `/adsy-finishing pakai style ${n}`, 'v/');
+build(M, 'grid-mg', 'rows-mg', n => `/adsy-motion-graph pakai gaya ${n}`, 'v/mg/');
 // details open on wide screens, folded on phones
 const wide = matchMedia('(min-width: 641px)');
 const syncDetails = () => document.querySelectorAll('.more').forEach(d => { d.open = wide.matches; });
 syncDetails(); wide.addEventListener('change', syncDetails);
-document.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', () => {
-  document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'));
-  const f = ch.dataset.f;
-  document.querySelectorAll('.card').forEach(c => { c.hidden = !(f === 'all' || c.dataset.g === f); });
+// filter chips, scoped to their own grid
+document.querySelectorAll('.chips').forEach(group => {
+  const grid = document.getElementById(group.dataset.for);
+  group.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', () => {
+    group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'));
+    const f = ch.dataset.f;
+    grid.querySelectorAll('.card').forEach(c => { c.hidden = !(f === 'all' || c.dataset.g === f); });
+  }));
+});
+// tabs: #finishing / #motion-graph
+const views = ['finishing', 'motion-graph'];
+function show(id) {
+  if (!views.includes(id)) id = 'finishing';
+  views.forEach(v => {
+    document.getElementById('view-' + v).hidden = v !== id;
+    document.getElementById('t-' + v).setAttribute('aria-selected', v === id ? 'true' : 'false');
+  });
+  document.querySelectorAll('video').forEach(o => o.pause());
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  if (location.hash !== '#' + t.dataset.v) location.hash = t.dataset.v; else show(t.dataset.v);
 }));
+addEventListener('hashchange', () => show(location.hash.slice(1)));
+show(location.hash.slice(1));
 </script>
 
 </body>
